@@ -35,7 +35,7 @@ jobs:
       - name: Build
         run: npm run build
         env:
-          VITE_BASE: /adedeji-3d-portfolio/
+          VITE_BASE: /AdedejiPortfolio/
 
       - name: Copy index.html to 404.html
         run: cp dist/index.html dist/404.html
