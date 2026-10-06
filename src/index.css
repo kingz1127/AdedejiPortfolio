@@ -1,0 +1,279 @@
+@import url("https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Manrope:wght@400;500;600;700;800&display=swap");
+@import "tailwindcss";
+@import "tw-animate-css";
+
+@custom-variant dark (&:is(.dark *));
+
+@theme {
+  /* Primary surfaces */
+  --color-ink: #11110f;
+  --color-ink-soft: #1a1a17;
+  --color-paper: #f1efe8;
+  --color-paper-deep: #e6e3da;
+
+  /* Brand */
+  --color-brand: #ff5c20;
+  --color-brand-light: #ff8a4c;
+  --color-brand-dark: #bd2e00;
+
+  /* Text */
+  --color-muted: #a7a59d;
+  --color-muted-dark: #686760;
+  --color-subtle: #77766f;
+
+  /* Status */
+  --color-success: #6ee7a5;
+
+  /* Project accents */
+  --color-project-orange: #ff6633;
+  --color-project-violet: #c8b8ff;
+  --color-project-mint: #a7dfcb;
+  --color-project-blue: #91b8ff;
+
+  /* Typography */
+  --font-sans: "Manrope", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "DM Mono", ui-monospace, monospace;
+
+  /* Radius (shadcn expects this) */
+  --radius-sm: 0.25rem;
+  --radius-md: 0.375rem;
+  --radius-lg: 0.5rem;
+  --radius-xl: 0.75rem;
+}
+
+/* ───────────────────────────────────────────────────────────
+   shadcn semantic tokens → mapped to your brand palette
+   ─────────────────────────────────────────────────────────── */
+:root {
+  --radius: 0.5rem;
+
+  /* Surfaces */
+  --background: var(--color-ink);
+  --foreground: var(--color-paper);
+  --card: var(--color-ink-soft);
+  --card-foreground: var(--color-paper);
+  --popover: var(--color-ink-soft);
+  --popover-foreground: var(--color-paper);
+
+  /* Primary = your brand orange */
+  --primary: var(--color-brand);
+  --primary-foreground: var(--color-paper);
+
+  /* Secondary = soft ink surface */
+  --secondary: var(--color-ink-soft);
+  --secondary-foreground: var(--color-paper);
+
+  /* Muted = secondary text */
+  --muted: var(--color-ink-soft);
+  --muted-foreground: var(--color-muted);
+
+  /* Accent = brand */
+  --accent: var(--color-brand);
+  --accent-foreground: var(--color-paper);
+
+  /* Destructive */
+  --destructive: var(--color-brand-dark);
+  --destructive-foreground: var(--color-paper);
+
+  /* Borders & inputs use your hairlines */
+  --border: rgb(241 239 232 / 14%);
+  --input: rgb(241 239 232 / 14%);
+  --ring: var(--color-brand);
+
+  /* Sidebar (shadcn v4 expects these even if unused) */
+  --sidebar: var(--color-ink-soft);
+  --sidebar-foreground: var(--color-paper);
+  --sidebar-primary: var(--color-brand);
+  --sidebar-primary-foreground: var(--color-paper);
+  --sidebar-accent: var(--color-brand);
+  --sidebar-accent-foreground: var(--color-paper);
+  --sidebar-border: rgb(241 239 232 / 14%);
+  --sidebar-ring: var(--color-brand);
+}
+
+/* Light-mode override — only kicks in if you add `.light` to <html>.
+   Your portfolio is dark-first, so this is optional but harmless. */
+.light {
+  --background: var(--color-paper);
+  --foreground: var(--color-ink);
+  --card: var(--color-paper-deep);
+  --card-foreground: var(--color-ink);
+  --popover: var(--color-paper);
+  --popover-foreground: var(--color-ink);
+  --primary: var(--color-brand);
+  --primary-foreground: var(--color-paper);
+  --secondary: var(--color-paper-deep);
+  --secondary-foreground: var(--color-ink);
+  --muted: var(--color-paper-deep);
+  --muted-foreground: var(--color-muted-dark);
+  --accent: var(--color-brand);
+  --accent-foreground: var(--color-paper);
+  --destructive: var(--color-brand-dark);
+  --destructive-foreground: var(--color-paper);
+  --border: rgb(17 17 15 / 16%);
+  --input: rgb(17 17 15 / 16%);
+  --ring: var(--color-brand);
+}
+
+/* Expose shadcn tokens as Tailwind utilities (bg-background, text-foreground, etc.) */
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-sidebar: var(--sidebar);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-ring: var(--sidebar-ring);
+
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  body {
+    @apply bg-background text-foreground;
+    font-family: var(--font-sans);
+  }
+}
+
+
+/* ───────────────────────────────────────────────────────────
+   Hero 3D scene — only what Tailwind can't cleanly express:
+   pointer-tracked transforms + 3 keyframes + orbiting dots
+   ─────────────────────────────────────────────────────────── */
+
+.scene {
+  transform: translate(
+    calc(var(--pointer-x, 0) * -7px),
+    calc(var(--pointer-y, 0) * -7px)
+  );
+}
+
+.core {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: min(350px, 50vw);
+  aspect-ratio: 1;
+  overflow: hidden;
+  border-radius: 38%;
+  border: 1px solid rgb(255 255 255 / 20%);
+  background:
+    radial-gradient(circle at 31% 25%, rgb(255 255 255 / 66%), transparent 6%),
+    radial-gradient(circle at 36% 30%, var(--color-brand-light), var(--color-brand) 44%, var(--color-brand-dark) 83%);
+  box-shadow:
+    inset -42px -42px 70px rgb(71 13 0 / 48%),
+    inset 24px 20px 40px rgb(255 202 170 / 28%),
+    0 40px 90px rgb(255 92 32 / 22%);
+  transform: translate(-50%, -50%)
+    rotateX(calc(var(--pointer-y, 0) * -7deg))
+    rotateY(calc(var(--pointer-x, 0) * 8deg))
+    rotate(8deg);
+  transform-style: preserve-3d;
+  animation: core-float 6s ease-in-out infinite;
+}
+
+.core::after {
+  position: absolute;
+  inset: 8%;
+  border: 1px solid rgb(255 255 255 / 20%);
+  border-radius: 33%;
+  content: "";
+}
+
+.orbit {
+  position: absolute;
+  z-index: -1;
+  top: 50%;
+  left: 50%;
+  width: 76%;
+  aspect-ratio: 1;
+  border: 1px solid rgb(255 255 255 / 13%);
+  border-radius: 50%;
+  transform: translate(-50%, -50%) rotateX(68deg) rotateZ(-18deg);
+}
+
+.orbit-two {
+  width: 92%;
+  transform: translate(-50%, -50%) rotateX(72deg) rotateZ(64deg);
+}
+
+.orbit span {
+  position: absolute;
+  top: 48%;
+  left: -5px;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--color-brand);
+  box-shadow: 0 0 18px var(--color-brand);
+  animation: orbit-dot 7s linear infinite;
+  transform-origin: calc(38vw + 5px) 5px;
+}
+
+@keyframes core-float {
+  0%, 100% { translate: 0 0; }
+  50% { translate: 0 -15px; }
+}
+
+@keyframes orbit-dot {
+  to { transform: rotate(360deg); }
+}
+
+/* On mobile, hide the scene's pointer tilt and shrink the cube */
+@media (max-width: 680px) {
+  .core { width: 250px; }
+}
+
+@keyframes marquee {
+  to { transform: translateX(-50%); }
+}
+
+/* Smooth scrolling for anchor navigation */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Prevent layout shift from scrollbar appearing/disappearing */
+html {
+  scrollbar-gutter: stable;
+}
+
+/* Cleaner focus rings globally */
+:focus-visible {
+  outline: 2px solid var(--color-brand);
+  outline-offset: 2px;
+}
+
+/* Hide scrollbar on horizontal scroll containers (filter pills on mobile) */
+.scrollbar-none::-webkit-scrollbar {
+  display: none;
+}
+.scrollbar-none {
+  scrollbar-width: none;
+}
