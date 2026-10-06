@@ -31,8 +31,7 @@ export const PINNED_REPOS: string[] = [
   "Hotel-booking-backend",
   "Hotel-booking-frontend",
   "KingzPlay-RN",
-  "LinkedShield",
-  "icmfold"
+  "icmfold",
 ];
 
 /**
@@ -45,7 +44,6 @@ export const REPO_CATEGORIES: Record<string, RepoCategory> = {
   "Hotel-booking-backend": "Backend",
   "Hotel-booking-frontend": "Full-stack",
   "KingzPlay-RN": "Mobile",
-  "LinkedShield": "Backend",
   "icmfold": "Backend"
 };
 
@@ -58,9 +56,8 @@ export const TITLE_OVERRIDES: Record<string, string> = {
   "DevOps-CloudSandBox": "DevOps CloudSandbox",
   "Hackathon-project": "School Management System",
   "Hotel-booking-backend": "Hotel Booking System - Backend",
-  "Hotel-booking-frontend": "Hotel Booking — Frontend",
-  " kehindeoloruntayo/Fresher-resource-Hub": "Fresher Resource Hub",
-  LinkedShield: "LinkedShield",
+  "Hotel-booking-frontend": "Hotel Booking System - Frontend",
+  "kehindeoloruntayo/Fresher-resource-Hub": "Fresher Resource Hub",
   "icmfold": "icmfold",
 };
 
