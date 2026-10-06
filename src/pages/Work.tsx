@@ -1,3 +1,4 @@
+
 import { useMemo, useState } from "react";
 import { ArrowUpRight, Filter } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
@@ -6,25 +7,71 @@ import { Stagger, StaggerItem } from "@/components/motion/Stagger";
 import { TiltCard } from "@/components/motion/TiltCard";
 import { ProjectVisual } from "@/components/sections/ProjectVisual";
 import { CaseStudyDialog } from "@/components/sections/CaseStudyDialog";
-import { categories, projects, type Filter as FilterType, type Project } from "@/data/projects";
+import { projects as curatedProjects, categories, type Filter as FilterType, type Project } from "@/data/projects";
 import { cn } from "@/lib/utils";
+import { useGitHubRepos, REPO_CATEGORIES } from "@/hooks/useGitHubRepos";
+
+const GITHUB_URL = "https://github.com/kingz1127";
+
+/**
+ * Match a GitHub repo name to a curated project by fuzzy-matching the title.
+ * "DevOps-CloudSandBox" → "DevOps CloudSandbox" → matches the curated "DevOps CloudSandbox"
+ */
+function findCuratedMatch(
+  repoName: string,
+  curated: Project[],
+): Project | undefined {
+  const normalized = repoName.toLowerCase().replace(/[-_\s]/g, "");
+  return curated.find((p) => {
+    const pTitle = p.title.toLowerCase().replace(/[-_\s]/g, "");
+    return pTitle.includes(normalized) || normalized.includes(pTitle);
+  });
+}
 
 export default function Work() {
   const [filter, setFilter] = useState<FilterType>("All");
   const [active, setActive] = useState<Project | null>(null);
 
+  // Fetch ALL pinned repos (limit = null)
+  const { repos, status } = useGitHubRepos(null);
+
+  // Merge GitHub repos with curated case-study data
+  const merged: Project[] = useMemo(() => {
+  return repos.map((repo, index) => {
+    const curated = findCuratedMatch(repo.githubName, curatedProjects);
+    const accents: Project["accent"][] = ["orange", "violet", "mint", "blue"];
+    return {
+      id: curated?.id ?? repo.githubName.toLowerCase(),
+      title: repo.name,
+      category:
+        curated?.category ??
+        REPO_CATEGORIES[repo.githubName] ??
+        "Full-stack",
+      summary:
+        repo.description ?? curated?.summary ?? "A production project from my GitHub.",
+      challenge: curated?.challenge ?? "Details on request.",
+      result:
+        curated?.result ??
+        `Live on GitHub — ${repo.stargazers_count} stars.`,
+      stack: curated?.stack ?? (repo.language ? [repo.language] : []),
+      accent: curated?.accent ?? accents[index % accents.length],
+      githubUrl: repo.html_url,
+    };
+  });
+}, [repos]);
+
   const visible = useMemo(
-    () => projects.filter((p) => filter === "All" || p.category === filter),
-    [filter],
+    () => merged.filter((p) => filter === "All" || p.category === filter),
+    [merged, filter],
   );
 
   return (
     <>
-      {/* ── Page hero ─────────────────────────────────────────── */}
+      {/* Page hero — unchanged */}
       <section className="relative flex min-h-[620px] flex-col justify-center border-b border-border px-[max(32px,calc((100vw-1400px)/2))] pt-[130px] pb-[70px] lg:min-h-[760px] lg:pt-[170px] lg:pb-[100px]">
         <Reveal from="bottom">
           <p className="mb-6 font-mono text-[10px] uppercase tracking-[0.13em] text-brand before:mr-2.5 before:inline-block before:h-px before:w-[22px] before:bg-current before:align-middle before:content-['']">
-            Selected work · 2022—2026
+            Selected work · Live from GitHub
           </p>
         </Reveal>
 
@@ -46,7 +93,7 @@ export default function Work() {
         </Reveal>
       </section>
 
-      {/* ── Work browser ──────────────────────────────────────── */}
+      {/* Work browser */}
       <section className="px-[max(32px,calc((100vw-1400px)/2))] pb-[90px] lg:pb-[150px]">
         {/* Toolbar */}
         <Reveal from="bottom">
@@ -74,7 +121,23 @@ export default function Work() {
               ))}
             </div>
 
-            <span className="hidden text-right lg:block">
+            <span className="hidden items-center gap-2 text-right lg:flex lg:justify-end">
+              <span
+                className={cn(
+                  "h-[7px] w-[7px] rounded-full",
+                  status === "loading"
+                    ? "animate-pulse bg-brand"
+                    : status === "live"
+                      ? "bg-success"
+                      : "bg-success",
+                )}
+              />
+              {status === "live"
+                ? "Live from GitHub"
+                : status === "loading"
+                  ? "Connecting"
+                  : "Curated work"}
+              {" · "}
               {String(visible.length).padStart(2, "0")} projects
             </span>
           </div>
@@ -90,7 +153,7 @@ export default function Work() {
                 className="group grid w-full grid-cols-[30px_1fr] items-center gap-4 border-b border-border py-9 text-left text-paper transition-colors hover:bg-paper/[0.02] lg:grid-cols-[50px_32%_1fr_auto] lg:gap-9 lg:py-8"
               >
                 <span className="row-span-2 self-start pt-2 font-mono text-[10px] text-muted lg:row-auto lg:self-center lg:pt-0">
-                  {String(projects.indexOf(project) + 1).padStart(2, "0")}
+                  {String(index + 1).padStart(2, "0")}
                 </span>
 
                 <div className="col-start-2 lg:col-start-auto">
@@ -107,7 +170,7 @@ export default function Work() {
                     {project.category}
                   </Badge>
 
-                  <h2 className="mb-4 text-[clamp(30px,3.2vw,51px)] font-medium leading-[1.05] tracking-[-0.055em]">
+                  <h2 className="mb-4 text-[clamp(30px,3.2vw,51px)] font-medium leading-[1.05] tracking-[-0.055em] capitalize">
                     {project.title}
                   </h2>
 
@@ -124,9 +187,14 @@ export default function Work() {
             </StaggerItem>
           ))}
         </Stagger>
+
+        {visible.length === 0 && status !== "loading" && (
+          <p className="py-20 text-center text-muted">
+            No projects match this filter.
+          </p>
+        )}
       </section>
 
-      {/* Case study dialog */}
       <CaseStudyDialog project={active} onClose={() => setActive(null)} />
     </>
   );

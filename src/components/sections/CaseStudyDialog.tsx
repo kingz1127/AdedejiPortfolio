@@ -9,7 +9,7 @@ import { Badge } from "@/components/ui/badge";
 import { ProjectVisual } from "./ProjectVisual";
 import type { Project } from "@/data/projects";
 
-const GITHUB_URL = "https://github.com/kingz1127";
+
 
 export function CaseStudyDialog({
   project,
@@ -85,14 +85,14 @@ export function CaseStudyDialog({
 
             {/* Link */}
             <a
-              href={GITHUB_URL}
-              target="_blank"
-              rel="noreferrer"
-              className="inline-flex items-center gap-2.5 border-b border-ink pb-2 text-[13px] font-bold hover:text-brand"
-            >
-              Explore GitHub
-              <ArrowUpRight className="h-4 w-4" />
-            </a>
+  href={project.githubUrl ?? "https://github.com/kingz1127"}
+  target="_blank"
+  rel="noreferrer"
+  className="inline-flex items-center gap-2.5 border-b border-ink pb-2 text-[13px] font-bold hover:text-brand"
+>
+  Explore GitHub
+  <ArrowUpRight className="h-4 w-4" />
+</a>
           </div>
         )}
       </DialogContent>

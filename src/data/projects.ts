@@ -9,6 +9,7 @@ export type Project = {
   result: string;
   stack: string[];
   accent: "orange" | "violet" | "mint" | "blue";
+  githubUrl?: string;
 };
 
 export const projects: Project[] = [
