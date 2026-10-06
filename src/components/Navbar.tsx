@@ -27,7 +27,7 @@ export default function NavBar() {
     <header className="absolute top-0 left-1/2 z-20 flex h-24 w-[min(100%-64px,1400px)] -translate-x-1/2 items-center justify-between border-b border-border">
       {/* Brand */}
       <Link to="/" className="flex items-center gap-3.5">
-        <span className="grid h-10 w-10 place-items-center -rotate-[5deg] border border-brand font-mono text-[13px] font-medium text-brand">
+        <span className="grid h-10 w-10 place-items-center -rotate-[5deg] border border-brand-light font-mono text-[13px] font-medium text-brand">
           AO
         </span>
         <span className="text-sm font-bold tracking-tight">
@@ -77,7 +77,7 @@ export default function NavBar() {
             <Menu className="h-5 w-5" />
           </Button>
         </SheetTrigger>
-        <SheetContent side="right" className="w-[240px] bg-ink-soft border-border">
+        <SheetContent side="right" className="w-[240px] bg-ink border-border">
           <SheetHeader>
             <SheetTitle className="text-left font-mono text-[10px] uppercase tracking-widest text-muted-foreground">
               Navigation

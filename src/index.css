@@ -7,12 +7,12 @@
 @theme {
   /* Primary surfaces */
   --color-ink: #11110f;
-  --color-ink-soft: #1a1a17;
+  --color-ink-soft: #f1efe8;
   --color-paper: #f1efe8;
   --color-paper-deep: #e6e3da;
 
   /* Brand */
-  --color-brand: #ff5c20;
+  --color-brand: #ff5c30;
   --color-brand-light: #ff8a4c;
   --color-brand-dark: #bd2e00;
 
