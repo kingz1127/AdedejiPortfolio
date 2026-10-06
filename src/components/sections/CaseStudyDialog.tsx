@@ -1,5 +1,5 @@
 import { ArrowUpRight, Check, MessageSquare } from "lucide-react";
-import { SiGithub } from "react-icons/si";
+// import { SiGithub } from "react-icons/si";
 import {
   Dialog,
   DialogContent,
