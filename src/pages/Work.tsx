@@ -11,7 +11,7 @@ import { projects as curatedProjects, categories, type Filter as FilterType, typ
 import { cn } from "@/lib/utils";
 import { useGitHubRepos, REPO_CATEGORIES } from "@/hooks/useGitHubRepos";
 
-const GITHUB_URL = "https://github.com/kingz1127";
+// const GITHUB_URL = "https://github.com/kingz1127";
 
 /**
  * Match a GitHub repo name to a curated project by fuzzy-matching the title.

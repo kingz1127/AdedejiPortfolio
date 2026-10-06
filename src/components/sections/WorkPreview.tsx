@@ -1,10 +1,11 @@
 import { Link } from "react-router-dom";
 import { ArrowRight } from "lucide-react";
-import { SiGithub } from "react-icons/si";
+// import { SiGithub } from "react-icons/si";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { useGitHubRepos } from "@/hooks/useGitHubRepos";
 import { Eyebrow } from "../Eyebrow";
+import { SiGithub } from "react-icons/si";
 
 export default function WorkPreview() {
   const { repos, status } = useGitHubRepos(3);
@@ -110,14 +111,15 @@ export default function WorkPreview() {
               </p>
 
               <a
-                href={repo.html_url}
-                target="_blank"
-                rel="noreferrer"
-                className="inline-flex items-center gap-2.5 border-b border-border py-2 text-[13px] font-bold text-paper transition-all hover:gap-4 hover:text-brand"
-              >
-                View repository
-                <ArrowRight className="h-[18px] w-[18px]" />
-              </a>
+  href={repo.html_url}
+  target="_blank"
+  rel="noreferrer"
+  className="inline-flex items-center gap-2.5 border-b border-border py-2 text-[13px] font-bold text-paper transition-all hover:gap-4 hover:text-brand"
+>
+  <SiGithub size={14} />
+  View repository
+  <ArrowRight className="h-[18px] w-[18px]" />
+</a>
             </div>
           </Card>
         ))}
