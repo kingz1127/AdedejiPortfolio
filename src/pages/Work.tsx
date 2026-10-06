@@ -1,64 +1,43 @@
-
 import { useMemo, useState } from "react";
-import { ArrowUpRight, Filter } from "lucide-react";
+import { AlertCircle, ArrowUpRight, Filter } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Reveal } from "@/components/motion/Reveal";
 import { Stagger, StaggerItem } from "@/components/motion/Stagger";
 import { TiltCard } from "@/components/motion/TiltCard";
 import { ProjectVisual } from "@/components/sections/ProjectVisual";
 import { CaseStudyDialog } from "@/components/sections/CaseStudyDialog";
-import { projects as curatedProjects, categories, type Filter as FilterType, type Project } from "@/data/projects";
+import {
+  categories,
+  type Filter as FilterType,
+  type Project,
+} from "@/data/projects";
 import { cn } from "@/lib/utils";
-import { useGitHubRepos, REPO_CATEGORIES } from "@/hooks/useGitHubRepos";
-
-// const GITHUB_URL = "https://github.com/kingz1127";
-
-/**
- * Match a GitHub repo name to a curated project by fuzzy-matching the title.
- * "DevOps-CloudSandBox" → "DevOps CloudSandbox" → matches the curated "DevOps CloudSandbox"
- */
-function findCuratedMatch(
-  repoName: string,
-  curated: Project[],
-): Project | undefined {
-  const normalized = repoName.toLowerCase().replace(/[-_\s]/g, "");
-  return curated.find((p) => {
-    const pTitle = p.title.toLowerCase().replace(/[-_\s]/g, "");
-    return pTitle.includes(normalized) || normalized.includes(pTitle);
-  });
-}
+import {
+  useGitHubRepos,
+  REPO_CATEGORIES,
+  PINNED_REPOS,
+} from "@/hooks/useGitHubRepos";
 
 export default function Work() {
   const [filter, setFilter] = useState<FilterType>("All");
   const [active, setActive] = useState<Project | null>(null);
 
-  // Fetch ALL pinned repos (limit = null)
-  const { repos, status } = useGitHubRepos(null);
+  const { repos, status, error } = useGitHubRepos(null);
 
-  // Merge GitHub repos with curated case-study data
   const merged: Project[] = useMemo(() => {
-  return repos.map((repo, index) => {
-    const curated = findCuratedMatch(repo.githubName, curatedProjects);
     const accents: Project["accent"][] = ["orange", "violet", "mint", "blue"];
-    return {
-      id: curated?.id ?? repo.githubName.toLowerCase(),
+    return repos.map((repo, index) => ({
+      id: repo.githubName.toLowerCase(),
       title: repo.name,
-      category:
-        curated?.category ??
-        REPO_CATEGORIES[repo.githubName] ??
-        "Full-stack",
-      summary:
-        repo.description ?? curated?.summary ?? "A production project from my GitHub.",
-      challenge: curated?.challenge ?? "Details on request.",
-      result:
-        curated?.result ??
-        `Live on GitHub — ${repo.stargazers_count} stars.`,
-      stack: curated?.stack ?? (repo.language ? [repo.language] : []),
-      accent: curated?.accent ?? accents[index % accents.length],
+      category: REPO_CATEGORIES[repo.githubName] ?? "Full-stack",
+      summary: repo.description ?? "No description on GitHub yet.",
+      challenge: "Details on request.",
+      result: `Live on GitHub — ${repo.stargazers_count} stars · Updated ${new Date(repo.updated_at).toLocaleDateString()}.`,
+      stack: repo.language ? [repo.language] : [],
+      accent: accents[index % accents.length],
       githubUrl: repo.html_url,
-    };
-  });
-}, [repos]);
+    }));
+  }, [repos]);
 
   const visible = useMemo(
     () => merged.filter((p) => filter === "All" || p.category === filter),
@@ -67,7 +46,7 @@ export default function Work() {
 
   return (
     <>
-      {/* Page hero — unchanged */}
+      {/* ── Page hero ─────────────────────────────────────────── */}
       <section className="relative flex min-h-[620px] flex-col justify-center border-b border-border px-[max(32px,calc((100vw-1400px)/2))] pt-[130px] pb-[70px] lg:min-h-[760px] lg:pt-[170px] lg:pb-[100px]">
         <Reveal from="bottom">
           <p className="mb-6 font-mono text-[10px] uppercase tracking-[0.13em] text-brand before:mr-2.5 before:inline-block before:h-px before:w-[22px] before:bg-current before:align-middle before:content-['']">
@@ -93,7 +72,7 @@ export default function Work() {
         </Reveal>
       </section>
 
-      {/* Work browser */}
+      {/* ── Work browser ──────────────────────────────────────── */}
       <section className="px-[max(32px,calc((100vw-1400px)/2))] pb-[90px] lg:pb-[150px]">
         {/* Toolbar */}
         <Reveal from="bottom">
@@ -125,20 +104,14 @@ export default function Work() {
               <span
                 className={cn(
                   "h-[7px] w-[7px] rounded-full",
-                  status === "loading"
-                    ? "animate-pulse bg-brand"
-                    : status === "live"
-                      ? "bg-success"
-                      : "bg-success",
+                  status === "loading" && "animate-pulse bg-brand",
+                  status === "live" && "bg-success",
+                  status === "error" && "bg-brand-dark",
                 )}
               />
-              {status === "live"
-                ? "Live from GitHub"
-                : status === "loading"
-                  ? "Connecting"
-                  : "Curated work"}
-              {" · "}
-              {String(visible.length).padStart(2, "0")} projects
+              {status === "live" && `Live from GitHub · ${visible.length} projects`}
+              {status === "loading" && "Connecting to GitHub…"}
+              {status === "error" && "GitHub unavailable"}
             </span>
           </div>
         </Reveal>
@@ -188,7 +161,25 @@ export default function Work() {
           ))}
         </Stagger>
 
-        {visible.length === 0 && status !== "loading" && (
+        {/* States below the list */}
+        {status === "error" && (
+          <div className="mt-8 flex items-start gap-3 border border-brand-dark/40 bg-brand-dark/5 p-4 text-sm">
+            <AlertCircle className="mt-0.5 h-4 w-4 shrink-0 text-brand" />
+            <div>
+              <p className="font-bold text-brand">Could not load GitHub repos</p>
+              <p className="mt-1 text-muted">{error}</p>
+              <p className="mt-2 text-[11px] text-muted">
+                Pinned names checked: {PINNED_REPOS.join(", ")}
+              </p>
+            </div>
+          </div>
+        )}
+
+        {status === "loading" && visible.length === 0 && (
+          <p className="py-20 text-center text-muted">Loading projects…</p>
+        )}
+
+        {status === "live" && visible.length === 0 && (
           <p className="py-20 text-center text-muted">
             No projects match this filter.
           </p>

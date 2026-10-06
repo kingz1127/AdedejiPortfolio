@@ -3,7 +3,7 @@ import { SiGithub } from "react-icons/si";
 import { LuLinkedin, LuMail } from "react-icons/lu";
 
 const GITHUB_URL = "https://github.com/kingz1127";
-const LINKEDIN_URL = "https://www.linkedin.com";
+const LINKEDIN_URL = "https://www.linkedin.com/in/adedeji-oshunyingbo-58243432b?utm_source=share_via&utm_content=profile&utm_medium=member_android";
 const EMAIL = "osunyingboadedeji1@gmail.com";
 
 export default function Footer() {

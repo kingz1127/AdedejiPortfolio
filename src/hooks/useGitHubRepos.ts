@@ -14,7 +14,7 @@ export type GitHubRepo = {
   topics: string[];
 };
 
-export type GitHubStatus = "loading" | "live" | "fallback";
+export type GitHubStatus = "loading" | "live" | "error";
 export type RepoCategory = "Backend" | "Full-stack" | "Mobile";
 
 const USERNAME = "kingz1127";
@@ -23,108 +23,46 @@ const API = `https://api.github.com/users/${USERNAME}/repos?per_page=100&sort=up
 /**
  * The exact GitHub repo names you want to feature, in display order.
  * Homepage shows the first 3, Work page shows all of them.
+ * These names must match GitHub exactly (case-sensitive).
  */
 export const PINNED_REPOS: string[] = [
   "DevOps-CloudSandBox",
   "Hackathon-project",
   "Hotel-booking-backend",
   "Hotel-booking-frontend",
-  "fresher-resource-hub-backend",
+  "KingzPlay-RN",
   "LinkedShield",
+  "icmfold"
 ];
 
 /**
  * Category assigned to each pinned repo. Used for the Work page filter.
+ * This is the ONLY piece of data that doesn't come from GitHub.
  */
 export const REPO_CATEGORIES: Record<string, RepoCategory> = {
   "DevOps-CloudSandBox": "Full-stack",
   "Hackathon-project": "Full-stack",
   "Hotel-booking-backend": "Backend",
   "Hotel-booking-frontend": "Full-stack",
-  "fresher-resource-hub-backend": "Backend",
-  LinkedShield: "Backend",
+  "KingzPlay-RN": "Mobile",
+  "LinkedShield": "Backend",
+  "icmfold": "Backend"
 };
 
 /**
- * Optional display overrides. Key = GitHub repo name.
+ * Optional title polish only. Descriptions and links still come from GitHub.
+ * If you don't want polished titles either, delete this map and the
+ * TITLE_OVERRIDES[r.name] lookup inside pickRepos.
  */
-export const OVERRIDES: Record<string, { title: string; description: string }> = {
-  "DevOps-CloudSandBox": {
-    title: "DevOps CloudSandbox",
-    description:
-      "Interactive learning platform that simulates enterprise infrastructure — Docker, Kubernetes, load balancing, and monitoring — inside a localized terminal.",
-  },
-  "Hackathon-project": {
-    title: "School Management System",
-    description:
-      "Collaborative school administration platform covering students, staff, scheduling, and academic records.",
-  },
-  "Hotel-booking-backend": {
-    title: "Hotel Booking System",
-    description:
-      "Real-time availability engine with date-aware booking, check-in workflows, and dedicated admin interfaces.",
-  },
-  "Hotel-booking-frontend": {
-    title: "Hotel Booking — Frontend",
-    description:
-      "Customer-facing booking flow with live availability, date selection, and instant confirmation.",
-  },
-  "fresher-resource-hub-backend": {
-    title: "Fresher Resource Hub",
-    description:
-      "Backend API powering a resource platform for early-career developers — auth, search, and content management.",
-  },
-  LinkedShield: {
-    title: "LinkedShield",
-    description:
-      "Java service exploring secure integrations and API boundary protection.",
-  },
+export const TITLE_OVERRIDES: Record<string, string> = {
+  "DevOps-CloudSandBox": "DevOps CloudSandbox",
+  "Hackathon-project": "School Management System",
+  "Hotel-booking-backend": "Hotel Booking System - Backend",
+  "Hotel-booking-frontend": "Hotel Booking — Frontend",
+  " kehindeoloruntayo/Fresher-resource-Hub": "Fresher Resource Hub",
+  LinkedShield: "LinkedShield",
+  "icmfold": "icmfold",
 };
-
-const fallback: GitHubRepo[] = [
-  {
-    id: 1,
-    name: "ICM Global Outreach",
-    githubName: "ICM Global Outreach",
-    description:
-      "A multi-role donation and outreach platform with secure payments, geocoding, and multi-channel notifications.",
-    html_url: `https://github.com/${USERNAME}`,
-    language: "Java",
-    stargazers_count: 0,
-    fork: false,
-    updated_at: "2025-01-01",
-    homepage: null,
-    topics: [],
-  },
-  {
-    id: 2,
-    name: "Hotel Booking System",
-    githubName: "Hotel Booking System",
-    description:
-      "Real-time availability, booking workflows, check-in logic, and dedicated customer and admin interfaces.",
-    html_url: `https://github.com/${USERNAME}`,
-    language: "Spring Boot",
-    stargazers_count: 0,
-    fork: false,
-    updated_at: "2024-12-01",
-    homepage: null,
-    topics: [],
-  },
-  {
-    id: 3,
-    name: "Mobile Audio Player",
-    githubName: "Mobile Audio Player",
-    description:
-      "Background audio streaming with ExoPlayer, MediaSession controls, and Bluetooth media button support.",
-    html_url: `https://github.com/${USERNAME}`,
-    language: "Android",
-    stargazers_count: 0,
-    fork: false,
-    updated_at: "2024-11-01",
-    homepage: null,
-    topics: [],
-  },
-];
 
 function pickRepos(all: GitHubRepo[], limit: number | null): GitHubRepo[] {
   const byName = new Map(all.map((r) => [r.name, r]));
@@ -135,46 +73,56 @@ function pickRepos(all: GitHubRepo[], limit: number | null): GitHubRepo[] {
 
   const sliced = limit === null ? matched : matched.slice(0, limit);
 
-  return sliced.map((r) => {
-    const override = OVERRIDES[r.name];
-    const withName = { ...r, githubName: r.name };
-    return override
-      ? { ...withName, name: override.title, description: override.description }
-      : withName;
-  });
+  // Preserve the real GitHub name, optionally polish the display title.
+  // Description, html_url, language, stars, updated_at all come from GitHub.
+  return sliced.map((r) => ({
+    ...r,
+    githubName: r.name,
+    name: TITLE_OVERRIDES[r.name] ?? r.name,
+  }));
 }
 
 export function useGitHubRepos(limit: number | null = 3) {
-  const [repos, setRepos] = useState<GitHubRepo[]>(
-    limit === null ? [] : fallback.slice(0, limit),
-  );
+  const [repos, setRepos] = useState<GitHubRepo[]>([]);
   const [status, setStatus] = useState<GitHubStatus>("loading");
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     const controller = new AbortController();
 
-    fetch(API, { signal: controller.signal })
+    fetch(API, {
+      signal: controller.signal,
+      headers: { Accept: "application/vnd.github+json" },
+    })
       .then((res) => {
-        if (!res.ok) throw new Error("GitHub API unavailable");
+        if (!res.ok) {
+          throw new Error(`GitHub API returned ${res.status} ${res.statusText}`);
+        }
         return res.json() as Promise<GitHubRepo[]>;
       })
       .then((data) => {
         const selected = pickRepos(data, limit);
-        if (selected.length) {
-          setRepos(selected);
-          setStatus("live");
-        } else {
-          setStatus("fallback");
+        if (!selected.length) {
+          throw new Error(
+            `None of the pinned repos matched. Checked: ${PINNED_REPOS.join(
+              ", ",
+            )}. GitHub returned ${data.length} repos.`,
+          );
         }
+        setRepos(selected);
+        setStatus("live");
+        setError(null);
       })
       .catch((err: unknown) => {
-        if (!(err instanceof DOMException && err.name === "AbortError")) {
-          setStatus("fallback");
-        }
+        if (err instanceof DOMException && err.name === "AbortError") return;
+        const message = err instanceof Error ? err.message : String(err);
+        console.error("[useGitHubRepos]", message);
+        setStatus("error");
+        setError(message);
       });
 
     return () => controller.abort();
   }, [limit]);
 
-  return { repos, status };
+  return { repos, status, error };
 }
