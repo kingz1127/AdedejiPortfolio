@@ -1,9 +1,8 @@
-import { useState } from "react";
-import { Briefcase, ShieldCheck, Zap, Plus, Minus } from "lucide-react";
+import { Briefcase, ShieldCheck, Zap } from "lucide-react";
 import { Reveal } from "@/components/motion/Reveal";
 import { Stagger, StaggerItem } from "@/components/motion/Stagger";
-import { principles, timeline } from "@/data/about";
-import { cn } from "@/lib/utils";
+import { TimelineSection } from "@/components/sections/TimelineSection";
+import { principles, experience, education } from "@/data/about";
 
 const icons = {
   shield: ShieldCheck,
@@ -12,8 +11,6 @@ const icons = {
 };
 
 export default function About() {
-  const [openItem, setOpenItem] = useState(0);
-
   return (
     <>
       {/* ── Hero ──────────────────────────────────────────────── */}
@@ -78,66 +75,36 @@ export default function About() {
         </Stagger>
       </section>
 
-      {/* ── Timeline ──────────────────────────────────────────── */}
-      <section className="grid grid-cols-1 gap-10 px-[max(32px,calc((100vw-1400px)/2))] py-[90px] lg:grid-cols-[0.7fr_1.3fr] lg:gap-[90px] lg:py-[140px]">
-        <Reveal from="left">
-          <div className="lg:sticky lg:top-10 lg:self-start">
-            <p className="mb-6 font-mono text-[10px] uppercase tracking-[0.13em] text-brand before:mr-2.5 before:inline-block before:h-px before:w-[22px] before:bg-current before:align-middle before:content-['']">
-              Experience timeline
-            </p>
-            <h2 className="text-[clamp(38px,4vw,64px)] font-medium leading-[1.05] tracking-[-0.06em]">
-              A practice built
-              <br />
-              across disciplines.
-            </h2>
-          </div>
-        </Reveal>
+      {/* ── Experience ────────────────────────────────────────── */}
+      <TimelineSection
+        id="experience"
+        eyebrow="Experience"
+        heading={
+          <>
+            Where I&apos;ve
+            <br />
+            built systems.
+          </>
+        }
+        items={experience}
+        variant="experience"
+      />
 
-        <Stagger className="border-t border-border">
-          {timeline.map((item, index) => {
-            const isOpen = openItem === index;
-            return (
-              <StaggerItem key={item.role}>
-                <button
-                  type="button"
-                  onClick={() => setOpenItem(index)}
-                  className="grid w-full grid-cols-[1fr_25px] gap-5 border-b border-border py-8 text-left text-paper lg:grid-cols-[130px_1fr_30px] lg:gap-6"
-                >
-                  <span className="col-span-2 font-mono text-[9px] uppercase tracking-[0.05em] text-muted lg:col-span-1">
-                    {item.date}
-                  </span>
-                  <div>
-                    <h3 className="mb-2 flex items-center gap-2.5 text-[21px] font-medium">
-                      <Briefcase className="h-[18px] w-[18px] text-brand" />
-                      {item.role}
-                    </h3>
-                    <span className="font-mono text-[9px] uppercase tracking-[0.05em] text-muted">
-                      {item.company}
-                    </span>
-                    <p
-                      className={cn(
-                        "overflow-hidden text-[13px] leading-[1.7] text-muted transition-[max-height,margin,opacity] duration-300",
-                        isOpen
-                          ? "mt-6 max-h-[160px] opacity-100"
-                          : "max-h-0 opacity-0",
-                      )}
-                    >
-                      {item.detail}
-                    </p>
-                  </div>
-                  <span className="text-right text-2xl text-brand">
-                    {isOpen ? (
-                      <Minus className="ml-auto h-5 w-5" />
-                    ) : (
-                      <Plus className="ml-auto h-5 w-5" />
-                    )}
-                  </span>
-                </button>
-              </StaggerItem>
-            );
-          })}
-        </Stagger>
-      </section>
+      {/* ── Education ─────────────────────────────────────────── */}
+      <TimelineSection
+        id="education"
+        eyebrow="Education"
+        heading={
+          <>
+            Where I built
+            <br />
+            the foundation.
+          </>
+        }
+        items={education}
+        variant="education"
+        defaultOpen={0}
+      />
 
       {/* ── Capability marquee ────────────────────────────────── */}
       <div className="overflow-hidden border-y border-border py-9">
@@ -148,7 +115,6 @@ export default function About() {
               <span className="mx-6 text-brand">✦</span>
             </span>
           ))}
-          {/* Duplicate for seamless loop */}
           {["Java", "Spring Boot", "React", "TypeScript", "PostgreSQL", "Cloud systems"].map((tech) => (
             <span key={`${tech}-dup`} className="flex items-center">
               {tech}

@@ -36,6 +36,7 @@ export default function Work() {
       stack: repo.language ? [repo.language] : [],
       accent: accents[index % accents.length],
       githubUrl: repo.html_url,
+      homepageUrl: repo.homepage ?? undefined,
     }));
   }, [repos]);
 
@@ -152,10 +153,25 @@ export default function Work() {
                   </p>
                 </div>
 
-                <span className="hidden items-center gap-2 self-center border-b border-border pb-2 text-[11px] transition-all group-hover:gap-4 group-hover:text-brand lg:flex">
-                  Open case study
-                  <ArrowUpRight className="h-5 w-5" />
-                </span>
+                <div className="hidden items-center gap-6 self-center lg:flex">
+  {project.homepageUrl && (
+    <a
+      href={project.homepageUrl}
+      target="_blank"
+      rel="noreferrer"
+      onClick={(e) => e.stopPropagation()}
+      className="flex items-center gap-2 border-b border-brand pb-2 text-[11px] text-brand transition-all hover:gap-4"
+    >
+      Live site
+      <ArrowUpRight className="h-4 w-4" />
+    </a>
+  )}
+
+  <span className="flex items-center gap-2 border-b border-border pb-2 text-[11px] transition-all group-hover:gap-4 group-hover:text-brand">
+    Open case study
+    <ArrowUpRight className="h-5 w-5" />
+  </span>
+</div>
               </button>
             </StaggerItem>
           ))}

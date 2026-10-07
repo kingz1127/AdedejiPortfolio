@@ -84,15 +84,31 @@ export function CaseStudyDialog({
             </div>
 
             {/* Link */}
-            <a
-  href={project.githubUrl ?? "https://github.com/kingz1127"}
-  target="_blank"
-  rel="noreferrer"
-  className="inline-flex items-center gap-2.5 border-b border-ink pb-2 text-[13px] font-bold hover:text-brand"
->
-  Explore GitHub
-  <ArrowUpRight className="h-4 w-4" />
-</a>
+
+
+           <div className="flex flex-wrap items-center gap-5">
+  {project.homepageUrl && (
+    <a
+      href={project.homepageUrl}
+      target="_blank"
+      rel="noreferrer"
+      className="inline-flex h-[48px] items-center gap-2.5 rounded-none bg-brand px-5 text-[13px] font-bold text-paper transition-colors hover:bg-ink hover:text-paper"
+    >
+      Visit live site
+      <ArrowUpRight className="h-4 w-4" />
+    </a>
+  )}
+
+  <a
+    href={project.githubUrl ?? "https://github.com/kingz1127"}
+    target="_blank"
+    rel="noreferrer"
+    className="inline-flex items-center gap-2.5 border-b border-ink pb-2 text-[13px] font-bold hover:text-brand"
+  >
+    Explore GitHub
+    <ArrowUpRight className="h-4 w-4" />
+  </a>
+</div>
           </div>
         )}
       </DialogContent>

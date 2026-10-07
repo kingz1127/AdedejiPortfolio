@@ -10,8 +10,8 @@ export default function HomePage() {
   return (
     <>
       <Hero />
-      <Reveal from="3d" duration={0.9}><ImpactStrip /></Reveal>
-      <Reveal from="3d" delay={0.05}><WorkPreview /></Reveal>
+      <Reveal from="3d" duration={1.9}><ImpactStrip /></Reveal>
+      <Reveal from="3d" delay={0.9}><WorkPreview /></Reveal>
       <Reveal from="bottom"><ExpertiseSection /></Reveal>
       <Reveal from="bottom"><AboutSection /></Reveal>
       <Reveal from="3d"><ContactSection /></Reveal>

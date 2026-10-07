@@ -36,21 +36,24 @@ export const principles: Principle[] = [
   },
 ];
 
-export const timeline: TimelineItem[] = [
+export const experience: TimelineItem[] = [
   {
-    date: "2024 — Present",
+    date: "2026",
     role: "Software Engineer · Java Backend",
     company: "The InnerCity Mission",
     detail:
       "Architecting secure APIs, payment systems, cloud messaging, advanced search, and administration tooling for global outreach operations.",
   },
   {
-    date: "2022 — Present",
-    role: "Full-stack Software Engineer",
-    company: "Independent Product Work",
+    date: "2024 — Present",
+    role: "Independent Product Work",
+    company: "Full-stack & Mobile",
     detail:
       "Building booking platforms, real-time user systems, mobile media products, and responsive product interfaces from concept to deployment.",
   },
+];
+
+export const education: TimelineItem[] = [
   {
     date: "2024 — 2026",
     role: "Advanced Diploma · Software Engineering",

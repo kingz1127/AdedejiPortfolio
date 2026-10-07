@@ -44,7 +44,7 @@ export default function NavBar() {
             className={({ isActive }) =>
               cn(
                 "text-[13px] font-semibold text-muted-foreground transition-colors hover:text-foreground",
-                isActive && "text-foreground",
+                isActive && "text-foreground w-16 rounded-full h-6 justify-center items-center flex bg-accent",
               )
             }
           >
@@ -74,7 +74,7 @@ export default function NavBar() {
             className="md:hidden"
             aria-label="Toggle navigation"
           >
-            <Menu className="h-5 w-5" />
+            <Menu className="h-5 w-5  hover:bg-accent" />
           </Button>
         </SheetTrigger>
         <SheetContent side="right" className="w-[240px] bg-ink border-border">
@@ -92,7 +92,7 @@ export default function NavBar() {
                 className={({ isActive }) =>
                   cn(
                     "rounded-md px-3 py-3 text-sm font-semibold text-muted-foreground transition-colors hover:bg-accent/10 hover:text-foreground",
-                    isActive && "text-foreground",
+                    isActive && "text-foreground bg-accent",
                   )
                 }
               >
