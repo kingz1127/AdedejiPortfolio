@@ -359,7 +359,7 @@ export default function Contact() {
                   >
                     <SelectValue placeholder="Choose a project type" />
                   </SelectTrigger>
-                  <SelectContent className="rounded-none border-border bg-ink-soft">
+                  <SelectContent className="rounded-none border-border bg-ink">
                     <SelectItem value="Backend or API system">
                       Backend or API system
                     </SelectItem>
