@@ -1,3 +1,5 @@
+
+
 export type ProjectCategory = "Backend" | "Full-stack" | "Mobile";
 
 export type Project = {
@@ -10,61 +12,34 @@ export type Project = {
   stack: string[];
   accent: "orange" | "violet" | "mint" | "blue";
   githubUrl?: string;
-  homepageUrl?: string; 
+  homepageUrl?: string;
+  manual?: boolean;   // ← new: marks projects that aren't fetched from GitHub
 };
 
-export const projects: Project[] = [
+export const manualProjects: Project[] = [
   {
     id: "icm",
     title: "ICM Global Outreach",
     category: "Backend",
     summary:
-      "Global donation, outreach, and volunteer operations in one secure system.",
+      "Volunteer and donation management system powering global outreach operations.",
     challenge:
-      "Design a multi-role platform that could process NGN and USD donations reliably while coordinating global outreach communications.",
+      "Design a multi-role platform that could process NGN and USD donations reliably while coordinating global outreach communications across continents.",
     result:
-      "Delivered a three-tier permission model, Paystack verification with webhook fail-safes, automated geocoding, and asynchronous notifications that improved API response time by 40%.",
-    stack: ["Spring Boot 3", "PostgreSQL", "Paystack", "Firebase", "OAuth2"],
+      "Architected a 3-tier Spring Boot 3 system with Paystack payment integration, KingsChat OAuth2, multi-channel notifications (FCM, Brevo, Twilio/WhatsApp), JPA Specification search, and automated geocoding. Asynchronous processing boosted API response times by 40%.",
+    stack: [
+      "Spring Boot 3",
+      "PostgreSQL",
+      "Paystack",
+      "KingsChat OAuth2",
+      "Firebase FCM",
+      "Twilio",
+      "Brevo",
+      "Google Maps",
+      "JPA Specifications",
+    ],
     accent: "orange",
-  },
-  {
-    id: "hotel",
-    title: "Hotel Booking System",
-    category: "Full-stack",
-    summary:
-      "Real-time room operations for customers, staff, and administrators.",
-    challenge:
-      "Create a dependable booking engine that handles room availability, date conflicts, walk-ins, and check-in workflows without operational ambiguity.",
-    result:
-      "Built customer and administration interfaces around a Java API with date-aware availability, instant confirmation, and complete booking management.",
-    stack: ["Java", "Spring Boot", "MySQL", "REST API", "React"],
-    accent: "violet",
-  },
-  {
-    id: "travel",
-    title: "Travel & Booking Platform",
-    category: "Full-stack",
-    summary:
-      "Dynamic passenger workflows, seat selection, and real-time dashboards.",
-    challenge:
-      "Make complex group bookings feel simple while preserving accurate passenger, seat, and session state.",
-    result:
-      "Implemented dynamic adult and child forms, persistent sessions, calendar views, role-based dashboards, and real-time data updates.",
-    stack: ["TypeScript", "React", "Supabase", "MongoDB", "RBAC"],
-    accent: "mint",
-  },
-  {
-    id: "audio",
-    title: "Mobile Audio Ecosystem",
-    category: "Mobile",
-    summary:
-      "Native and cross-platform audio that keeps playing in the background.",
-    challenge:
-      "Deliver reliable playback across minimized apps, Bluetooth controls, and changing mobile lifecycle states.",
-    result:
-      "Shipped Android and React Native players with streaming, MediaSession controls, background playback, and complete track management.",
-    stack: ["Android", "Java", "ExoPlayer", "React Native", "Expo"],
-    accent: "blue",
+    manual: true,
   },
 ];
 

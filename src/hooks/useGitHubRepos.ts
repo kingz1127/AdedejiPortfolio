@@ -70,8 +70,6 @@ function pickRepos(all: GitHubRepo[], limit: number | null): GitHubRepo[] {
 
   const sliced = limit === null ? matched : matched.slice(0, limit);
 
-  // Preserve the real GitHub name, optionally polish the display title.
-  // Description, html_url, language, stars, updated_at all come from GitHub.
   return sliced.map((r) => ({
     ...r,
     githubName: r.name,

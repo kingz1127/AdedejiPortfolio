@@ -1,3 +1,4 @@
+
 import { useMemo, useState } from "react";
 import { AlertCircle, ArrowUpRight, Filter } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
@@ -7,6 +8,7 @@ import { TiltCard } from "@/components/motion/TiltCard";
 import { ProjectVisual } from "@/components/sections/ProjectVisual";
 import { CaseStudyDialog } from "@/components/sections/CaseStudyDialog";
 import {
+  manualProjects,
   categories,
   type Filter as FilterType,
   type Project,
@@ -26,7 +28,8 @@ export default function Work() {
 
   const merged: Project[] = useMemo(() => {
     const accents: Project["accent"][] = ["orange", "violet", "mint", "blue"];
-    return repos.map((repo, index) => ({
+
+    const fromGitHub: Project[] = repos.map((repo, index) => ({
       id: repo.githubName.toLowerCase(),
       title: repo.name,
       category: REPO_CATEGORIES[repo.githubName] ?? "Full-stack",
@@ -38,6 +41,9 @@ export default function Work() {
       githubUrl: repo.html_url,
       homepageUrl: repo.homepage ?? undefined,
     }));
+
+    // Manual projects (ICM) come first, then GitHub
+    return [...manualProjects, ...fromGitHub];
   }, [repos]);
 
   const visible = useMemo(
@@ -51,7 +57,7 @@ export default function Work() {
       <section className="relative flex min-h-[620px] flex-col justify-center border-b border-border px-[max(32px,calc((100vw-1400px)/2))] pt-[130px] pb-[70px] lg:min-h-[760px] lg:pt-[170px] lg:pb-[100px]">
         <Reveal from="bottom">
           <p className="mb-6 font-mono text-[10px] uppercase tracking-[0.13em] text-brand before:mr-2.5 before:inline-block before:h-px before:w-[22px] before:bg-current before:align-middle before:content-['']">
-            Selected work · Live from GitHub
+            Selected work · 2022—2026
           </p>
         </Reveal>
 
@@ -110,7 +116,7 @@ export default function Work() {
                   status === "error" && "bg-brand-dark",
                 )}
               />
-              {status === "live" && `Live from GitHub · ${visible.length} projects`}
+              {status === "live" && `${visible.length} projects`}
               {status === "loading" && "Connecting to GitHub…"}
               {status === "error" && "GitHub unavailable"}
             </span>
@@ -144,40 +150,39 @@ export default function Work() {
                     {project.category}
                   </Badge>
 
-                  <h2 className="mb-4 text-[clamp(30px,3.2vw,51px)] font-medium leading-[1.05] tracking-[-0.055em] capitalize">
+                  <h2 className="mb-4 text-[clamp(30px,3.2vw,51px)] font-medium leading-[1.05] tracking-[-0.055em]">
                     {project.title}
                   </h2>
 
                   <p className="max-w-[540px] text-[13px] leading-[1.7] text-muted">
                     {project.summary}
                   </p>
+                
                 </div>
 
                 <div className="hidden items-center gap-6 self-center lg:flex">
-  {project.homepageUrl && (
-    <a
-      href={project.homepageUrl}
-      target="_blank"
-      rel="noreferrer"
-      onClick={(e) => e.stopPropagation()}
-      className="flex items-center gap-2 border-b border-brand pb-2 text-[11px] text-brand transition-all hover:gap-4"
-    >
-      Live site
-      <ArrowUpRight className="h-4 w-4" />
-    </a>
-  )}
-
-  <span className="flex items-center gap-2 border-b border-border pb-2 text-[11px] transition-all group-hover:gap-4 group-hover:text-brand">
-    Open case study
-    <ArrowUpRight className="h-5 w-5" />
-  </span>
-</div>
+                  {project.homepageUrl && (
+                    <a
+                      href={project.homepageUrl}
+                      target="_blank"
+                      rel="noreferrer"
+                      onClick={(e) => e.stopPropagation()}
+                      className="flex items-center gap-2 border-b border-brand pb-2 text-[11px] text-brand transition-all hover:gap-4"
+                    >
+                      Live site
+                      <ArrowUpRight className="h-4 w-4" />
+                    </a>
+                  )}
+                  <span className="flex items-center gap-2 border-b border-border pb-2 text-[11px] transition-all group-hover:gap-4 group-hover:text-brand">
+                    Open case study
+                    <ArrowUpRight className="h-5 w-5" />
+                  </span>
+                </div>
               </button>
             </StaggerItem>
           ))}
         </Stagger>
 
-        {/* States below the list */}
         {status === "error" && (
           <div className="mt-8 flex items-start gap-3 border border-brand-dark/40 bg-brand-dark/5 p-4 text-sm">
             <AlertCircle className="mt-0.5 h-4 w-4 shrink-0 text-brand" />

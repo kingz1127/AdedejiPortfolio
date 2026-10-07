@@ -1,4 +1,5 @@
-import { Database, LayoutGrid, Server } from "lucide-react";
+
+import { Database, LayoutGrid, Server, ShieldCheck, Smartphone } from "lucide-react";
 import { Reveal } from "@/components/motion/Reveal";
 import { Stagger, StaggerItem } from "@/components/motion/Stagger";
 
@@ -9,14 +10,31 @@ const groups = [
     blurb:
       "Secure APIs, authentication, payment flows, and background jobs built to be operated, not just to run.",
     tools: [
-      "Java 17+",
-      "Spring Boot 3",
-      "Node.js",
-      "REST & GraphQL",
+      "Java 17+ / Spring Boot 3",
+      "Node.js / Express",
+      "REST APIs",
+      "JPA Specifications & Pagination",
       "OAuth2 / JWT",
-      "JPA / Hibernate",
-      "Paystack / Stripe",
+      "BCrypt",
+      "HMAC-SHA512",
+      "@Async Processing",
+      "RBAC",
+    ],
+  },
+  {
+    icon: ShieldCheck,
+    title: "Fintech & integrations",
+    blurb:
+      "Payment gateways, messaging platforms, and third-party APIs wired into production systems with integrity.",
+    tools: [
+      "Paystack (NGN/USD)",
+      "Webhook verification",
+      "KingsChat OAuth2",
       "Firebase Cloud Messaging",
+      "Brevo (transactional email)",
+      "Twilio / WhatsApp API",
+      "Termii (SMS)",
+      "Google Maps Geocoding",
     ],
   },
   {
@@ -32,14 +50,30 @@ const groups = [
       "shadcn/ui",
       "Radix UI",
       "Motion",
-      "React Native / Expo",
+      "Responsive UI",
+      "HTML5 / CSS3",
+    ],
+  },
+  {
+    icon: Smartphone,
+    title: "Mobile",
+    blurb:
+      "Native and cross-platform audio and product apps that hold up in the background and across devices.",
+    tools: [
+      "Android (Java)",
+      "ExoPlayer",
+      "MediaSession API",
+      "Bluetooth media controls",
+      "Background playback",
+      "React Native",
+      "Expo",
     ],
   },
   {
     icon: Database,
-    title: "Data & cloud",
+    title: "Data, cloud & DevOps",
     blurb:
-      "Persistence that scales and infrastructure that holds up when traffic spikes.",
+      "Persistence that scales, deployments that stick, and observability when things go sideways.",
     tools: [
       "PostgreSQL",
       "MySQL",
@@ -47,8 +81,10 @@ const groups = [
       "Supabase",
       "Docker",
       "Kubernetes",
-      "AWS (EC2 / S3 / RDS)",
+      "Render (deployment)",
+      "Firebase Console",
       "GitHub Actions",
+      "Postman / Swagger UI",
     ],
   },
 ];
@@ -82,7 +118,7 @@ export default function Expertise() {
 
       {/* ── Skill groups ──────────────────────────────────────── */}
       <section className="px-[max(32px,calc((100vw-1400px)/2))] py-[90px] lg:py-[140px]">
-        <Stagger gap={0.12} className="grid grid-cols-1 gap-6 lg:grid-cols-3">
+        <Stagger gap={0.12} className="grid grid-cols-1 gap-6 lg:grid-cols-2 xl:grid-cols-3">
           {groups.map((group) => {
             const Icon = group.icon;
             return (

@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { useInView } from "motion/react";
 
-const START_DATE = new Date(2024, 0, 1); // Jan 1, 2024
+const START_DATE = new Date(2024, 0, 1); 
 
 function getTotalMonths(): number {
   const now = new Date();
