@@ -39,14 +39,14 @@ export const principles: Principle[] = [
 
 export const experience: TimelineItem[] = [
   {
-    date: "2024 — Present",
+    date: "2026",
     role: "Software Engineer · Java Backend",
     company: "The InnerCity Mission",
     detail:
       "Architected a 3-tier volunteer and donation platform (Spring Boot 3 + PostgreSQL) with Paystack NGN/USD payment integration, KingsChat OAuth2, multi-channel notifications (Firebase FCM, Brevo, Twilio/WhatsApp), JPA Specification search, and automated Google Maps geocoding. Asynchronous processing with @Async boosted API response times by 40%.",
   },
   {
-    date: "2022 — Present",
+    date: "2024 — Present",
     role: "Independent Product Work",
     company: "Full-stack · Mobile · Cloud",
     detail:
