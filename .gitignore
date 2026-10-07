@@ -27,3 +27,5 @@ dist-ssr
 .vite
 .env*
 !.env.example
+
+.env.local
