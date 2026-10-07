@@ -8,7 +8,7 @@ const icons = {
   shield: ShieldCheck,
   briefcase: Briefcase,
   zap: Zap,
-};
+}; 
 
 export default function About() {
   return (

@@ -17,4 +17,4 @@ export default function HomePage() {
       <Reveal from="3d"><ContactSection /></Reveal>
     </>
   );
-}
+} 

@@ -167,7 +167,7 @@ export default function Work() {
                       target="_blank"
                       rel="noreferrer"
                       onClick={(e) => e.stopPropagation()}
-                      className="flex items-center gap-2 border-b border-brand pb-2 text-[11px] text-brand transition-all hover:gap-4"
+                       className="flex items-center gap-2 border-b border-brand pb-2 text-[11px] text-brand transition-all hover:gap-4"
                     >
                       Live site
                       <ArrowUpRight className="h-4 w-4" />
